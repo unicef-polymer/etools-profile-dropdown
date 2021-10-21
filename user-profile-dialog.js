@@ -22,14 +22,15 @@ class EtoolsUserProfileDialog extends PolymerElement {
             width: 100%;
             overflow-x: hidden;
             max-height: 600px;
-          };
+          }
         }
 
         paper-input {
           width: 100%;
         }
 
-        paper-input[readonly], etools-dropdown-multi[readonly] {
+        paper-input[readonly],
+        etools-dropdown-multi[readonly] {
           pointer-events: none;
           --paper-input-container-underline: {
             display: none;
@@ -51,7 +52,8 @@ class EtoolsUserProfileDialog extends PolymerElement {
           flex: 1;
         }
 
-        .row-h + .row-h, .row-v + .row-v {
+        .row-h + .row-h,
+        .row-v + .row-v {
           margin-top: 20px;
         }
 
@@ -82,12 +84,16 @@ class EtoolsUserProfileDialog extends PolymerElement {
         etools-dialog::part(ed-title) {
           border-bottom: var(--epd-profile-dialog-border-b, none);
         }
-
       </style>
 
-      <etools-dialog id="userProfileDialog" size="lg" ok-btn-text="Save" dialog-title="My Profile"
-                     hide-confirm-btn="[[readonly]]" on-close="_closeUserProfileDialog">
-
+      <etools-dialog
+        id="userProfileDialog"
+        size="lg"
+        ok-btn-text="Save"
+        dialog-title="My Profile"
+        hide-confirm-btn="[[readonly]]"
+        on-close="_closeUserProfileDialog"
+      >
         <div id="profile-content" part="epd-user-profile-dropdown-content">
           <!-- FIELDS HIDDEN AS REQUIRED BY BUSINESS SPECS - CH6215 -->
           <!-- <div class="row-h flex-c">
@@ -122,42 +128,62 @@ class EtoolsUserProfileDialog extends PolymerElement {
                 </etools-dropdown>
               </div>
             </div> -->
-            <div class="row-h flex-c">
-              <div class="col col-12">
-                <paper-input id="name" label="Name" placeholder="&#8212;" value="[[profile.name]]" readonly></paper-input>
-              </div>
+          <div class="row-h flex-c">
+            <div class="col col-12">
+              <paper-input id="name" label="Name" placeholder="&#8212;" value="[[profile.name]]" readonly></paper-input>
             </div>
-            <div class="row-h flex-c" hidden$="[[!showEmail]]">
-              <div class="col col-12">
-                <paper-input id="email" label="Email" placeholder="&#8212;" value="[[profile.email]]" readonly></paper-input>
-              </div>
+          </div>
+          <div class="row-h flex-c" hidden$="[[!showEmail]]">
+            <div class="col col-12">
+              <paper-input
+                id="email"
+                label="Email"
+                placeholder="&#8212;"
+                value="[[profile.email]]"
+                readonly
+              ></paper-input>
             </div>
-            <div class="row-h flex-c">
-              <div class="col col-12">
-                <etools-dropdown-multi id="workspaces" label="Available workspaces" placeholder="—"
-                                       selected-values="[[availableCountryIds]]" options="[[profile.countries_available]]"
-                                       option-value="id" option-label="name" readonly>
-                </etools-dropdown-multi>
-              </div>
+          </div>
+          <div class="row-h flex-c">
+            <div class="col col-12">
+              <etools-dropdown-multi
+                id="workspaces"
+                label="Available workspaces"
+                placeholder="—"
+                selected-values="[[availableCountryIds]]"
+                options="[[profile.countries_available]]"
+                option-value="id"
+                option-label="name"
+                readonly
+              >
+              </etools-dropdown-multi>
             </div>
-            <div class="row-h flex-c">
-              <div class="col col-12">
-                <etools-dropdown-multi id="groups" label="My Groups" placeholder="—" selected-values="[[availableGroups]]"
-                                       options="[[profile.groups]]" option-value="id" option-label="name" readonly>
-                </etools-dropdown-multi>
-              </div>
+          </div>
+          <div class="row-h flex-c">
+            <div class="col col-12">
+              <etools-dropdown-multi
+                id="groups"
+                label="My Groups"
+                placeholder="—"
+                selected-values="[[availableGroups]]"
+                options="[[profile.groups]]"
+                option-value="id"
+                option-label="name"
+                readonly
+              >
+              </etools-dropdown-multi>
             </div>
-            <!-- <div class="row-h flex-c">
+          </div>
+          <!-- <div class="row-h flex-c">
               <div class="col col-12">
                 <etools-dropdown-multi id="supervisees" label="My supervisees" placeholder="—"
                                        selected-values="[[profile.supervisees]]" options="[[users]]" readonly>
                 </etools-dropdown-multi>
               </div>
             </div> -->
-          </div>
-
-        </etools-dialog>
-`;
+        </div>
+      </etools-dialog>
+    `;
   }
 
   static get is() {
@@ -204,19 +230,21 @@ class EtoolsUserProfileDialog extends PolymerElement {
     if (profile === undefined) {
       return;
     }
-    let availableCountryIds = this.profile.countries_available.map(x => x['id']);
-    let availableGroups = this.profile.groups.map(x => x['id']);
+    const availableCountryIds = this.profile.countries_available.map((x) => x['id']);
+    const availableGroups = this.profile.groups.map((x) => x['id']);
 
     this.set('availableCountryIds', availableCountryIds);
     this.set('availableGroups', availableGroups);
   }
 
   saveData() {
-    this.dispatchEvent(new CustomEvent('save-profile', {
-      detail: {profile: this.profile},
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('save-profile', {
+        detail: {profile: this.profile},
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 }
 

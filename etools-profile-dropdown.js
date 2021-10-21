@@ -6,7 +6,6 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles.js';
 import './user-profile-dialog.js';
 import isEmpty from 'lodash-es/isEmpty';
-import toArray from 'lodash-es/toArray';
 
 /**
  * `etools-profile-dropdown`
@@ -32,11 +31,12 @@ class EtoolsProfileDropdown extends PolymerElement {
         }
 
         :host([opened]) {
-          background: var(--primary-background-color, #FFFFFF);
+          background: var(--primary-background-color, #ffffff);
         }
 
         :host([opened]) #profile,
-        #accountProfile, #powerSettings {
+        #accountProfile,
+        #powerSettings {
           color: var(--dark-scondary-text-color, rgba(0, 0, 0, 0.54));
         }
 
@@ -46,7 +46,7 @@ class EtoolsProfileDropdown extends PolymerElement {
 
         #user-dropdown {
           z-index: 100;
-          background: var(--primary-background-color, #FFFFFF);
+          background: var(--primary-background-color, #ffffff);
           padding: 8px 0;
           right: 0;
         }
@@ -64,14 +64,18 @@ class EtoolsProfileDropdown extends PolymerElement {
         }
 
         #user-dropdown .item:hover {
-          background: var(--medium-theme-background-color, #EEEEEE);
+          background: var(--medium-theme-background-color, #eeeeee);
         }
       </style>
 
-      <paper-icon-button id="profile" icon="social:person" role="button"
-                         on-click="_toggleMenu"></paper-icon-button>
-      <iron-dropdown id="userDropdown" horizontal-align="right" vertical-align="top" vertical-offset="60"
-                     opened="{{opened}}">
+      <paper-icon-button id="profile" icon="social:person" role="button" on-click="_toggleMenu"></paper-icon-button>
+      <iron-dropdown
+        id="userDropdown"
+        horizontal-align="right"
+        vertical-align="top"
+        vertical-offset="60"
+        opened="{{opened}}"
+      >
         <div id="user-dropdown" class="paper-material" elevation="5" slot="dropdown-content">
           <div class="item" on-click="_openUserProfileDialog">
             <paper-icon-button id="accountProfile" icon="account-circle"></paper-icon-button>
@@ -180,15 +184,18 @@ class EtoolsProfileDropdown extends PolymerElement {
   }
 
   _dispatchSaveProfileEvent(ev) {
-    this.dispatchEvent(new CustomEvent('save-profile', {
-      detail: ev.detail,
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('save-profile', {
+        detail: ev.detail,
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   _dataLoaded() {
-    if (!this.userProfileDialog) {//Fixes timing issue
+    if (!this.userProfileDialog) {
+      // Fixes timing issue
       return;
     }
     // if (this._allHaveValues('users', 'profile', 'offices', 'sections')) {
@@ -212,8 +219,7 @@ class EtoolsProfileDropdown extends PolymerElement {
     this.userProfileDialog.showEmail = this.showEmail;
   }
 
-  _allHaveValues() {
-    let args = toArray(arguments);
+  _allHaveValues(...args) {
     return args.reduce((hasVal, prop) => {
       return !isEmpty(this[prop]) && hasVal;
     }, true);
@@ -229,11 +235,13 @@ class EtoolsProfileDropdown extends PolymerElement {
     this.userProfileDialog.openUserProfileDialog();
     // if (this._allHaveValues('users', 'profile', 'offices', 'sections')) {
     if (!this._allHaveValues('profile')) {
-      this.dispatchEvent(new CustomEvent('global-loading', {
-        detail: {active: true, message: 'Loading profile...'},
-        bubbles: true,
-        composed: true
-      }));
+      this.dispatchEvent(
+        new CustomEvent('global-loading', {
+          detail: {active: true, message: 'Loading profile...'},
+          bubbles: true,
+          composed: true
+        })
+      );
       this.set('_loadingProfileMsgActive', true);
     }
     this.set('opened', false);
