@@ -187,7 +187,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
               </etools-dropdown-multi> -->
               <div>
                 <label class="paper-label">Available Workspaces</label>
-                <div class="input-label flex-wrap">
+                <div class="input-label flex-wrap" empty$="[[!profile.countries_available]]">
                   <dom-repeat items="[[profile.countries_available]]">
                     <template>
                       <div>
@@ -215,7 +215,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
               </etools-dropdown-multi> -->
               <div>
                 <label class="paper-label">My Groups</label>
-                <div class="input-label flex-wrap">
+                <div class="input-label flex-wrap" empty$="[[!profile.groups]]">
                   <dom-repeat items="[[profile.groups]]">
                     <template>
                       <div>
