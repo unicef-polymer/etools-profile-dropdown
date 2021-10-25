@@ -43,10 +43,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
         }
 
         .separator {
-          padding: 0 4px;
-        }
-        .separator:last-of-type() {
-          display: none;
+          padding: 0 8px;
         }
 
         paper-input {
