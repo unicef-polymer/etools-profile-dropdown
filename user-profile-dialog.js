@@ -1,8 +1,6 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-input/paper-input.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 
 /**
  * @polymer
@@ -23,6 +21,29 @@ class EtoolsUserProfileDialog extends PolymerElement {
             overflow-x: hidden;
             max-height: 600px;
           }
+        }
+
+        .paper-label {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          padding-top: 6px;
+        }
+
+        .input-label {
+          min-height: 24px;
+          padding-top: 4px;
+          padding-bottom: 6px;
+          min-width: 0;
+          font-size: 16px;
+        }
+
+        .input-label[empty]::after {
+          content: '—';
+          color: var(--secondary-text-color);
+        }
+
+        .separator {
+          padding: 0 8px;
         }
 
         paper-input {
@@ -83,6 +104,13 @@ class EtoolsUserProfileDialog extends PolymerElement {
 
         etools-dialog::part(ed-title) {
           border-bottom: var(--epd-profile-dialog-border-b, none);
+        }
+        .flex-wrap {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .input-label.flex-wrap div {
+          padding-bottom: 6px;
         }
       </style>
 
@@ -146,7 +174,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
           </div>
           <div class="row-h flex-c">
             <div class="col col-12">
-              <etools-dropdown-multi
+              <!-- <etools-dropdown-multi
                 id="workspaces"
                 label="Available workspaces"
                 placeholder="—"
@@ -156,12 +184,25 @@ class EtoolsUserProfileDialog extends PolymerElement {
                 option-label="name"
                 readonly
               >
-              </etools-dropdown-multi>
+              </etools-dropdown-multi> -->
+              <div>
+                <label class="paper-label">Available Workspaces</label>
+                <div class="input-label flex-wrap" empty$="[[!profile.countries_available]]">
+                  <dom-repeat items="[[profile.countries_available]]">
+                    <template>
+                      <div>
+                        [[item.name]]
+                        <span class="separator">[[getSeparator(profile.countries_available, index)]]</span>
+                      </div>
+                    </template>
+                  </dom-repeat>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row-h flex-c">
             <div class="col col-12">
-              <etools-dropdown-multi
+              <!-- <etools-dropdown-multi
                 id="groups"
                 label="My Groups"
                 placeholder="—"
@@ -171,7 +212,20 @@ class EtoolsUserProfileDialog extends PolymerElement {
                 option-label="name"
                 readonly
               >
-              </etools-dropdown-multi>
+              </etools-dropdown-multi> -->
+              <div>
+                <label class="paper-label">My Groups</label>
+                <div class="input-label flex-wrap" empty$="[[!profile.groups]]">
+                  <dom-repeat items="[[profile.groups]]">
+                    <template>
+                      <div>
+                        [[item.name]]
+                        <span class="separator">[[getSeparator(profile.groups, index)]]</span>
+                      </div>
+                    </template>
+                  </dom-repeat>
+                </div>
+              </div>
             </div>
           </div>
           <!-- <div class="row-h flex-c">
@@ -224,6 +278,16 @@ class EtoolsUserProfileDialog extends PolymerElement {
     if (e.detail.confirmed) {
       this.saveData();
     }
+  }
+
+  getSeparator(collection, index) {
+    if (!collection) {
+      return '';
+    }
+    if (index < collection.length - 1) {
+      return '|';
+    }
+    return '';
   }
 
   _mapIds(profile) {
