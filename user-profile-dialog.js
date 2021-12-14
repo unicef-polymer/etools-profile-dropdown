@@ -187,7 +187,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
               </etools-dropdown-multi> -->
               <div>
                 <label class="paper-label">Available Workspaces</label>
-                <div class="input-label flex-wrap" empty$="[[!profile.countries_available]]">
+                <div class="input-label flex-wrap" empty$="[[_emptyArray(profile.countries_available)]]">
                   <dom-repeat items="[[profile.countries_available]]">
                     <template>
                       <div>
@@ -215,7 +215,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
               </etools-dropdown-multi> -->
               <div>
                 <label class="paper-label">My Groups</label>
-                <div class="input-label flex-wrap" empty$="[[!profile.groups]]">
+                <div class="input-label flex-wrap" empty$="[[_emptyArray(profile.groups)]]">
                   <dom-repeat items="[[profile.groups]]">
                     <template>
                       <div>
@@ -294,11 +294,26 @@ class EtoolsUserProfileDialog extends PolymerElement {
     if (profile === undefined) {
       return;
     }
-    const availableCountryIds = this.profile.countries_available.map((x) => x['id']);
-    const availableGroups = this.profile.groups.map((x) => x['id']);
+    let availableCountryIds;
+    let availableGroups;
+    if (!this.profile.countries_available) {
+      availableCountryIds = [];
+    } else {
+      availableCountryIds = this.profile.countries_available.map((x) => x['id']);
+    }
 
-    this.set('availableCountryIds', availableCountryIds);
-    this.set('availableGroups', availableGroups);
+    if (!this.profile.groups) {
+      availableGroups = [];
+    } else {
+      availableGroups = this.profile.groups.map((x) => x['id']);
+    }
+
+    this.availableCountryIds = availableCountryIds;
+    this.availableGroups = availableGroups;
+  }
+
+  _emptyArray(arr) {
+    return !arr || !arr.length;
   }
 
   saveData() {
