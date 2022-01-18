@@ -4,7 +4,6 @@ import '@polymer/iron-icons/social-icons.js';
 import '@polymer/iron-dropdown/iron-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import './user-profile-dialog.js';
-import isEmpty from 'lodash-es/isEmpty';
 
 /**
  * `etools-profile-dropdown`
@@ -234,8 +233,20 @@ class EtoolsProfileDropdown extends LitElement {
 
   _allHaveValues(...args) {
     return args.reduce((hasVal, prop) => {
-      return !isEmpty(this[prop]) && hasVal;
+      return !this._isEmpty(this[prop]) && hasVal;
     }, true);
+  }
+
+  _isEmpty(value) {
+    if (value == null) {
+      return true;
+    }
+    for (var key in value) {
+      if (hasOwnProperty.call(value, key)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   _logout() {
