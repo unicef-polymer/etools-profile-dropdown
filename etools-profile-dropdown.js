@@ -1,9 +1,8 @@
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {LitElement, html} from 'lit-element';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/social-icons.js';
 import '@polymer/iron-dropdown/iron-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-styles/element-styles/paper-material-styles.js';
 import './user-profile-dialog.js';
 import isEmpty from 'lodash-es/isEmpty';
 
@@ -15,11 +14,11 @@ import isEmpty from 'lodash-es/isEmpty';
  * @polymer
  * @demo demo/index.html
  */
-class EtoolsProfileDropdown extends PolymerElement {
-  static get template() {
+class EtoolsProfileDropdown extends LitElement {
+  render() {
     // language=HTML
     return html`
-      <style include="paper-material-styles">
+      <style>
         :host {
           display: flex;
           flex-direction: row;
@@ -66,22 +65,39 @@ class EtoolsProfileDropdown extends PolymerElement {
         #user-dropdown .item:hover {
           background: var(--medium-theme-background-color, #eeeeee);
         }
+
+        .elevation,
+        :host(.elevation) {
+          display: block;
+          position: relative;
+        }
+
+        .elevation[elevation='5'],
+        :host(.elevation[elevation='5']) {
+          box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12),
+            0 8px 10px -5px rgba(0, 0, 0, 0.4);
+        }
       </style>
 
-      <paper-icon-button id="profile" icon="social:person" role="button" on-click="_toggleMenu"></paper-icon-button>
+      <paper-icon-button
+        id="profile"
+        icon="social:person"
+        role="button"
+        @click="${this._toggleMenu}"
+      ></paper-icon-button>
       <iron-dropdown
         id="userDropdown"
         horizontal-align="right"
         vertical-align="top"
         vertical-offset="60"
-        opened="{{opened}}"
+        .opened="${this.opened}"
       >
         <div id="user-dropdown" class="paper-material" elevation="5" slot="dropdown-content">
-          <div class="item" on-click="_openUserProfileDialog">
+          <div class="item" @click="${this._openUserProfileDialog}">
             <paper-icon-button id="accountProfile" icon="account-circle"></paper-icon-button>
             Profile
           </div>
-          <div class="item" on-click="_logout">
+          <div class="item" @click="${this._logout}">
             <paper-icon-button id="powerSettings" icon="power-settings-new"></paper-icon-button>
             Sign out
           </div>
@@ -90,16 +106,11 @@ class EtoolsProfileDropdown extends PolymerElement {
     `;
   }
 
-  static get is() {
-    return 'etools-profile-dropdown';
-  }
-
   static get properties() {
     return {
       opened: {
         type: Boolean,
-        value: false,
-        reflectToAttribute: true
+        reflect: true
       },
       userProfileDialog: Object,
       /**
@@ -113,8 +124,7 @@ class EtoolsProfileDropdown extends PolymerElement {
        * @type (ArrayBuffer|ArrayBufferView)
        */
       sections: {
-        type: Array,
-        notify: true
+        type: Array
       },
 
       /**
@@ -128,8 +138,7 @@ class EtoolsProfileDropdown extends PolymerElement {
        * @type (ArrayBuffer|ArrayBufferView)
        */
       offices: {
-        type: Array,
-        notify: true
+        type: Array
       },
 
       /**
@@ -143,8 +152,7 @@ class EtoolsProfileDropdown extends PolymerElement {
        * @type (ArrayBuffer|ArrayBufferView)
        */
       users: {
-        type: Object,
-        notify: true
+        type: Object
       },
 
       /**
@@ -154,25 +162,30 @@ class EtoolsProfileDropdown extends PolymerElement {
        *  and all modifications should be POSTed to the same endpoint
        */
       profile: {
-        type: Object,
-        notify: true
+        type: Object
       },
 
-      showEmail: {
-        type: Boolean,
-        reflectToAttribute: true,
-        value: false
-      },
+      showEmail: {type: Boolean, attribute: 'show-email', reflect: true},
 
       _loadingProfileMsgActive: Boolean
     };
   }
 
-  static get observers() {
-    return [
-      // '_dataLoaded(sections, offices, users, profile)'
-      '_dataLoaded(profile)'
-    ];
+  set profile(val) {
+    this._profile = val;
+    this._dataLoaded(this.profile);
+  }
+
+  get profile() {
+    return this._profile;
+  }
+
+  constructor() {
+    super();
+
+    this.opened = false;
+    this.readonly = true;
+    this.showEmail = false;
   }
 
   connectedCallback() {
@@ -205,7 +218,7 @@ class EtoolsProfileDropdown extends PolymerElement {
       // this.userProfileDialog.users = this.users;
       // this.userProfileDialog.sections = this.sections;
       if (this._loadingProfileMsgActive) {
-        this.set('_loadingProfileMsgActive', false);
+        this._loadingProfileMsgActive = false;
         this.dispatchEvent(new CustomEvent('global-loading', {bubbles: true, composed: true}));
       }
     }
@@ -227,7 +240,7 @@ class EtoolsProfileDropdown extends PolymerElement {
 
   _logout() {
     this.dispatchEvent(new CustomEvent('sign-out', {bubbles: true, composed: true}));
-    this.set('opened', false);
+    this.opened = false;
   }
 
   _openUserProfileDialog() {
@@ -242,13 +255,13 @@ class EtoolsProfileDropdown extends PolymerElement {
           composed: true
         })
       );
-      this.set('_loadingProfileMsgActive', true);
+      this._loadingProfileMsgActive = true;
     }
-    this.set('opened', false);
+    this.opened = false;
   }
 
   _toggleMenu() {
-    this.set('opened', !this.opened);
+    this.opened = !this.opened;
   }
 
   _isInPath(path, prop, value) {
@@ -262,4 +275,4 @@ class EtoolsProfileDropdown extends PolymerElement {
   }
 }
 
-window.customElements.define(EtoolsProfileDropdown.is, EtoolsProfileDropdown);
+window.customElements.define('etools-profile-dropdown', EtoolsProfileDropdown);

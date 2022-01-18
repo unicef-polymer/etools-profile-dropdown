@@ -1,4 +1,4 @@
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {LitElement, html} from 'lit-element';
 import '@polymer/paper-input/paper-input.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
@@ -6,8 +6,8 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
  * @polymer
  * @customElement
  */
-class EtoolsUserProfileDialog extends PolymerElement {
-  static get template() {
+export class EtoolsUserProfileDialog extends LitElement {
+  render() {
     // language=HTML
     return html`
       <style>
@@ -119,111 +119,96 @@ class EtoolsUserProfileDialog extends PolymerElement {
         size="lg"
         ok-btn-text="Save"
         dialog-title="My Profile"
-        hide-confirm-btn="[[readonly]]"
-        on-close="_closeUserProfileDialog"
+        ?hide-confirm-btn="${this.readonly}"
+        @close="${this._closeUserProfileDialog}"
       >
         <div id="profile-content" part="epd-user-profile-dropdown-content">
           <!-- FIELDS HIDDEN AS REQUIRED BY BUSINESS SPECS - CH6215 -->
           <!-- <div class="row-h flex-c">
               <div class="col col-6">
-                <etools-dropdown id="office" label="Office" placeholder="—" selected="{{profile.office}}"
-                                 options="[[offices]]" auto-validate="" error-message="Please select an office">
+                <etools-dropdown id="office" label="Office" placeholder="—" .selected="${this.profile.office}}"
+                                 .options="${this.offices}" auto-validate="" error-message="Please select an office">
                 </etools-dropdown>
               </div>
               <div class="col col-6">
-                <etools-dropdown id="section" label="Section" placeholder="—" selected="{{profile.section}}"
-                                 options="[[sections]]" auto-validate="" error-message="Please select a section">
+                <etools-dropdown id="section" label="Section" placeholder="—" .selected="${this.profile.section}"
+                                 .options="${this.sections}" auto-validate="" error-message="Please select a section">
                 </etools-dropdown>
               </div>
             </div>
             <div class="row-h flex-c">
               <div class="col col-6">
-                <paper-input label="Job title" value="{{profile.job_title}}" placeholder="—"></paper-input>
+                <paper-input label="Job title" .value="${this.profile.job_title}" placeholder="—"></paper-input>
               </div>
               <div class="col col-6">
-                <paper-input label="Phone number" value="{{profile.phone_number}}" placeholder="—"></paper-input>
+                <paper-input label="Phone number" .value="${this.profile.phone_number}" placeholder="—"></paper-input>
               </div>
             </div>
             <div class="row-h flex-c">
               <div class="col col-6">
-                <paper-input id="supervisor" label="My supervisor" placeholder="—" value="[[profile.supervisor]]"
+                <paper-input id="supervisor" label="My supervisor" placeholder="—" .value="${this.profile.supervisor}"
                              readonly="">
                 </paper-input>
               </div>
               <div class="col col-6">
-                <etools-dropdown id="oic" label="My OIC" placeholder="—" selected="{{profile.oic}}" options="[[users]]"
+                <etools-dropdown id="oic" label="My OIC" placeholder="—"
+                .selected="${this.profile.oic}" .options="${this.users}"
                                  auto-validate="" error-message="Please select an OIC">
                 </etools-dropdown>
               </div>
             </div> -->
           <div class="row-h flex-c">
             <div class="col col-12">
-              <paper-input id="name" label="Name" placeholder="&#8212;" value="[[profile.name]]" readonly></paper-input>
+              <paper-input
+                id="name"
+                label="Name"
+                placeholder="&#8212;"
+                .value="${this.profile.name}"
+                readonly
+              ></paper-input>
             </div>
           </div>
-          <div class="row-h flex-c" hidden$="[[!showEmail]]">
+          <div class="row-h flex-c" ?hidden="${!this.showEmail}">
             <div class="col col-12">
               <paper-input
                 id="email"
                 label="Email"
                 placeholder="&#8212;"
-                value="[[profile.email]]"
+                .value="${this.profile.email}"
                 readonly
               ></paper-input>
             </div>
           </div>
           <div class="row-h flex-c">
             <div class="col col-12">
-              <!-- <etools-dropdown-multi
-                id="workspaces"
-                label="Available workspaces"
-                placeholder="—"
-                selected-values="[[availableCountryIds]]"
-                options="[[profile.countries_available]]"
-                option-value="id"
-                option-label="name"
-                readonly
-              >
-              </etools-dropdown-multi> -->
               <div>
                 <label class="paper-label">Available Workspaces</label>
-                <div class="input-label flex-wrap" empty$="[[_emptyArray(profile.countries_available)]]">
-                  <dom-repeat items="[[profile.countries_available]]">
-                    <template>
+                <div class="input-label flex-wrap" ?empty="${this._emptyArray(this.profile.countries_available)}">
+                  ${(this.profile.countries_available || []).map(
+                    (item, index) => html`
                       <div>
-                        [[item.name]]
-                        <span class="separator">[[getSeparator(profile.countries_available, index)]]</span>
+                        ${item.name}
+                        <span class="separator">${this.getSeparator(this.profile.countries_available, index)}</span>
                       </div>
-                    </template>
-                  </dom-repeat>
+                    `
+                  )}
                 </div>
               </div>
             </div>
           </div>
           <div class="row-h flex-c">
             <div class="col col-12">
-              <!-- <etools-dropdown-multi
-                id="groups"
-                label="My Groups"
-                placeholder="—"
-                selected-values="[[availableGroups]]"
-                options="[[profile.groups]]"
-                option-value="id"
-                option-label="name"
-                readonly
-              >
-              </etools-dropdown-multi> -->
               <div>
                 <label class="paper-label">My Groups</label>
-                <div class="input-label flex-wrap" empty$="[[_emptyArray(profile.groups)]]">
-                  <dom-repeat items="[[profile.groups]]">
-                    <template>
+                <div class="input-label flex-wrap" ?empty="${this._emptyArray(this.profile.groups)}">
+                  ${(this.profile.groups || []).map(
+                    (item, index) => html`
                       <div>
-                        [[item.name]]
-                        <span class="separator">[[getSeparator(profile.groups, index)]]</span>
+                        ${item.name}
+                        <span class="separator">${this.getSeparator(this.profile.groups, index)}</span>
                       </div>
-                    </template>
-                  </dom-repeat>
+                    `
+                  )}
                 </div>
               </div>
             </div>
@@ -231,7 +216,7 @@ class EtoolsUserProfileDialog extends PolymerElement {
           <!-- <div class="row-h flex-c">
               <div class="col col-12">
                 <etools-dropdown-multi id="supervisees" label="My supervisees" placeholder="—"
-                                       selected-values="[[profile.supervisees]]" options="[[users]]" readonly>
+                                        .selectedValues="${this.profile.supervisees}" .options="${this.users}" readonly>
                 </etools-dropdown-multi>
               </div>
             </div> -->
@@ -240,38 +225,38 @@ class EtoolsUserProfileDialog extends PolymerElement {
     `;
   }
 
-  static get is() {
-    return 'etools-user-profile-dialog';
-  }
-
   static get properties() {
     return {
-      profile: {
-        type: Object,
-        notify: true
-      },
-      readonly: {
-        type: Boolean,
-        value: true
-      },
+      profile: {type: Object},
+      readonly: {type: Boolean},
       // offices: Array,
       // sections: Array,
       // users: Array,
       availableCountryIds: Array,
       availableGroups: Array,
-      showEmail: {
-        type: Boolean,
-        value: false
-      }
+      showEmail: {type: Boolean}
     };
   }
 
-  static get observers() {
-    return ['_mapIds(profile)'];
+  set profile(val) {
+    this._profile = val;
+    this._mapIds(this.profile);
+  }
+
+  get profile() {
+    return this._profile;
+  }
+
+  constructor() {
+    super();
+
+    this._profile = {};
+    this.readonly = true;
+    this.showEmail = false;
   }
 
   openUserProfileDialog() {
-    this.$.userProfileDialog.opened = true;
+    this.shadowRoot.querySelector('#userProfileDialog').opened = true;
   }
 
   _closeUserProfileDialog(e) {
@@ -327,4 +312,4 @@ class EtoolsUserProfileDialog extends PolymerElement {
   }
 }
 
-window.customElements.define(EtoolsUserProfileDialog.is, EtoolsUserProfileDialog);
+window.customElements.define('etools-user-profile-dialog', EtoolsUserProfileDialog);
