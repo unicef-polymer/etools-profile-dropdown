@@ -90,8 +90,11 @@ class EtoolsProfileDropdown extends LitElement {
         vertical-align="top"
         vertical-offset="60"
         .opened="${this.opened}"
+        @opened-changed="${({detail}) => {
+          this.opened = detail.value;
+        }}"
       >
-        <div id="user-dropdown" class="paper-material" elevation="5" slot="dropdown-content">
+        <div id="user-dropdown" class="elevation" elevation="5" slot="dropdown-content">
           <div class="item" @click="${this._openUserProfileDialog}">
             <paper-icon-button id="accountProfile" icon="account-circle"></paper-icon-button>
             Profile
