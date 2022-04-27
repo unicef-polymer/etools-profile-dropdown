@@ -1,4 +1,4 @@
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/social-icons.js';
 import '@polymer/iron-dropdown/iron-dropdown.js';
@@ -164,6 +164,12 @@ class EtoolsProfileDropdown extends PolymerElement {
         value: false
       },
 
+      hideAvailableWorkspaces: {
+        type: Boolean,
+        reflectToAttribute: true,
+        value: false
+      },
+
       _loadingProfileMsgActive: Boolean
     };
   }
@@ -206,7 +212,7 @@ class EtoolsProfileDropdown extends PolymerElement {
       // this.userProfileDialog.sections = this.sections;
       if (this._loadingProfileMsgActive) {
         this.set('_loadingProfileMsgActive', false);
-        this.dispatchEvent(new CustomEvent('global-loading', {bubbles: true, composed: true}));
+        this.dispatchEvent(new CustomEvent('global-loading', { bubbles: true, composed: true }));
       }
     }
   }
@@ -217,6 +223,7 @@ class EtoolsProfileDropdown extends PolymerElement {
     }
     this.userProfileDialog.profile = JSON.parse(JSON.stringify(this.profile));
     this.userProfileDialog.showEmail = this.showEmail;
+    this.userProfileDialog.hideAvailableWorkspaces = this.hideAvailableWorkspaces;
   }
 
   _allHaveValues(...args) {
@@ -226,7 +233,7 @@ class EtoolsProfileDropdown extends PolymerElement {
   }
 
   _logout() {
-    this.dispatchEvent(new CustomEvent('sign-out', {bubbles: true, composed: true}));
+    this.dispatchEvent(new CustomEvent('sign-out', { bubbles: true, composed: true }));
     this.set('opened', false);
   }
 
@@ -237,7 +244,7 @@ class EtoolsProfileDropdown extends PolymerElement {
     if (!this._allHaveValues('profile')) {
       this.dispatchEvent(
         new CustomEvent('global-loading', {
-          detail: {active: true, message: 'Loading profile...'},
+          detail: { active: true, message: 'Loading profile...' },
           bubbles: true,
           composed: true
         })
