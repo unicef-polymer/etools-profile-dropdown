@@ -12,13 +12,12 @@
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-
+import {LitElement, html} from 'lit-element';
 /**
  * `etools-profile-dropdown`
  * User profile dropdown for header toolbar.
  */
-declare class EtoolsProfileDropdown extends PolymerElement {
+declare class EtoolsProfileDropdown extends LitElement {
   opened: boolean | null | undefined;
   userProfileDialog: object | null | undefined;
 
