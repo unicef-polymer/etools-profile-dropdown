@@ -169,6 +169,12 @@ class EtoolsProfileDropdown extends LitElement {
 
       showEmail: {type: Boolean, attribute: 'show-email', reflect: true},
 
+      hideAvailableWorkspaces: {
+        type: Boolean,
+        attribute: 'hide-available-workspaces',
+        reflect: true
+      },
+
       _loadingProfileMsgActive: Boolean
     };
   }
@@ -232,6 +238,7 @@ class EtoolsProfileDropdown extends LitElement {
     }
     this.userProfileDialog.profile = JSON.parse(JSON.stringify(this.profile));
     this.userProfileDialog.showEmail = this.showEmail;
+    this.userProfileDialog.hideAvailableWorkspaces = this.hideAvailableWorkspaces;
   }
 
   _allHaveValues(...args) {

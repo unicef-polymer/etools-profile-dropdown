@@ -126,7 +126,7 @@ export class EtoolsUserProfileDialog extends LitElement {
           <!-- FIELDS HIDDEN AS REQUIRED BY BUSINESS SPECS - CH6215 -->
           <!-- <div class="row-h flex-c">
               <div class="col col-6">
-                <etools-dropdown id="office" label="Office" placeholder="—" .selected="${this.profile.office}}"
+                <etools-dropdown id="office" label="Office" placeholder="—" .selected="${this.profile.office}"
                                  .options="${this.offices}" auto-validate="" error-message="Please select an office">
                 </etools-dropdown>
               </div>
@@ -179,7 +179,7 @@ export class EtoolsUserProfileDialog extends LitElement {
               ></paper-input>
             </div>
           </div>
-          <div class="row-h flex-c">
+          <div class="row-h flex-c" ?hidden="${this.hideAvailableWorkspaces}">
             <div class="col col-12">
               <div>
                 <label class="paper-label">Available Workspaces</label>
@@ -234,7 +234,8 @@ export class EtoolsUserProfileDialog extends LitElement {
       // users: Array,
       availableCountryIds: Array,
       availableGroups: Array,
-      showEmail: {type: Boolean}
+      showEmail: {type: Boolean},
+      hideAvailableWorkspaces: {type: Boolean}
     };
   }
 
