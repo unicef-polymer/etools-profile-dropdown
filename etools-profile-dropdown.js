@@ -4,6 +4,7 @@ import '@polymer/iron-icons/social-icons.js';
 import '@polymer/iron-dropdown/iron-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import './user-profile-dialog.js';
+import {getTranslation} from './utils/translate.js';
 
 /**
  * `etools-profile-dropdown`
@@ -97,11 +98,11 @@ class EtoolsProfileDropdown extends LitElement {
         <div id="user-dropdown" class="elevation" elevation="5" slot="dropdown-content">
           <div class="item" @click="${this._openUserProfileDialog}">
             <paper-icon-button id="accountProfile" icon="account-circle"></paper-icon-button>
-            Profile
+            ${getTranslation(this.language, 'PROFILE')}
           </div>
           <div class="item" @click="${this._logout}">
             <paper-icon-button id="powerSettings" icon="power-settings-new"></paper-icon-button>
-            Sign out
+            ${getTranslation(this.language, 'SIGN_OUT')}
           </div>
         </div>
       </iron-dropdown>
@@ -175,7 +176,8 @@ class EtoolsProfileDropdown extends LitElement {
         reflect: true
       },
 
-      _loadingProfileMsgActive: Boolean
+      _loadingProfileMsgActive: Boolean,
+      language: {type: String}
     };
   }
 
@@ -194,6 +196,9 @@ class EtoolsProfileDropdown extends LitElement {
     this.opened = false;
     this.readonly = true;
     this.showEmail = false;
+    if (!this.language) {
+      this.language = 'en';
+    }
   }
 
   connectedCallback() {
@@ -201,6 +206,7 @@ class EtoolsProfileDropdown extends LitElement {
     this.userProfileDialog = document.createElement('etools-user-profile-dialog');
     this.userProfileDialog.addEventListener('save-profile', this._dispatchSaveProfileEvent.bind(this));
     this.userProfileDialog.setAttribute('id', 'userProfileDialog');
+    this.userProfileDialog.language = this.language;
     document.querySelector('body').appendChild(this.userProfileDialog);
   }
 
@@ -222,6 +228,7 @@ class EtoolsProfileDropdown extends LitElement {
     // if (this._allHaveValues('users', 'profile', 'offices', 'sections')) {
     if (this._allHaveValues('profile')) {
       this.userProfileDialog.profile = this.profile;
+      this.userProfileDialog.language = this.language;
       // this.userProfileDialog.offices = this.offices;
       // this.userProfileDialog.users = this.users;
       // this.userProfileDialog.sections = this.sections;
@@ -237,6 +244,7 @@ class EtoolsProfileDropdown extends LitElement {
       return;
     }
     this.userProfileDialog.profile = JSON.parse(JSON.stringify(this.profile));
+    this.userProfileDialog.language = this.language;
     this.userProfileDialog.showEmail = this.showEmail;
     this.userProfileDialog.hideAvailableWorkspaces = this.hideAvailableWorkspaces;
   }

@@ -1,6 +1,7 @@
 import {LitElement, html} from 'lit-element';
 import '@polymer/paper-input/paper-input.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {getTranslation} from './utils/translate';
 
 /**
  * @polymer
@@ -117,8 +118,9 @@ export class EtoolsUserProfileDialog extends LitElement {
       <etools-dialog
         id="userProfileDialog"
         size="lg"
-        ok-btn-text="Save"
-        dialog-title="My Profile"
+        ok-btn-text="${getTranslation(this.language, 'OK_BTN_TEXT')}"
+        cancel-btn-text="${getTranslation(this.language, 'CANCEL_BTN_TEXT')}"
+        dialog-title="${getTranslation(this.language, 'MY_PROFILE')}"
         ?hide-confirm-btn="${this.readonly}"
         @close="${this._closeUserProfileDialog}"
       >
@@ -161,7 +163,7 @@ export class EtoolsUserProfileDialog extends LitElement {
             <div class="col col-12">
               <paper-input
                 id="name"
-                label="Name"
+                label="${getTranslation(this.language, 'NAME')}"
                 placeholder="&#8212;"
                 .value="${this.profile.name}"
                 readonly
@@ -172,7 +174,7 @@ export class EtoolsUserProfileDialog extends LitElement {
             <div class="col col-12">
               <paper-input
                 id="email"
-                label="Email"
+                label="${getTranslation(this.language, 'EMAIL')}"
                 placeholder="&#8212;"
                 .value="${this.profile.email}"
                 readonly
@@ -182,7 +184,7 @@ export class EtoolsUserProfileDialog extends LitElement {
           <div class="row-h flex-c" ?hidden="${this.hideAvailableWorkspaces}">
             <div class="col col-12">
               <div>
-                <label class="paper-label">Available Workspaces</label>
+                <label class="paper-label">${getTranslation(this.language, 'AVAILABLE_WORKSPACES')}</label>
                 <div class="input-label flex-wrap" ?empty="${this._emptyArray(this.profile.countries_available)}">
                   ${(this.profile.countries_available || []).map(
                     (item, index) => html`
@@ -199,7 +201,7 @@ export class EtoolsUserProfileDialog extends LitElement {
           <div class="row-h flex-c">
             <div class="col col-12">
               <div>
-                <label class="paper-label">My Groups</label>
+                <label class="paper-label">${getTranslation(this.language, 'MY_GROUPS')}</label>
                 <div class="input-label flex-wrap" ?empty="${this._emptyArray(this.profile.groups)}">
                   ${(this.profile.groups || []).map(
                     (item, index) => html`
@@ -235,7 +237,8 @@ export class EtoolsUserProfileDialog extends LitElement {
       availableCountryIds: Array,
       availableGroups: Array,
       showEmail: {type: Boolean},
-      hideAvailableWorkspaces: {type: Boolean}
+      hideAvailableWorkspaces: {type: Boolean},
+      language: {type: String}
     };
   }
 
