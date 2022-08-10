@@ -97,11 +97,11 @@ class EtoolsProfileDropdown extends LitElement {
         <div id="user-dropdown" class="elevation" elevation="5" slot="dropdown-content">
           <div class="item" @click="${this._openUserProfileDialog}">
             <paper-icon-button id="accountProfile" icon="account-circle"></paper-icon-button>
-            Profile
+            ${this.translations.profile || 'Profile'}
           </div>
           <div class="item" @click="${this._logout}">
             <paper-icon-button id="powerSettings" icon="power-settings-new"></paper-icon-button>
-            Sign out
+            ${this.translations.signOut || 'Sign out'}
           </div>
         </div>
       </iron-dropdown>
@@ -175,6 +175,8 @@ class EtoolsProfileDropdown extends LitElement {
         reflect: true
       },
 
+      translations: {type: Object},
+
       _loadingProfileMsgActive: Boolean
     };
   }
@@ -194,6 +196,9 @@ class EtoolsProfileDropdown extends LitElement {
     this.opened = false;
     this.readonly = true;
     this.showEmail = false;
+    if (!this.translations) {
+      this.translations = {};
+    }
   }
 
   connectedCallback() {
@@ -201,6 +206,7 @@ class EtoolsProfileDropdown extends LitElement {
     this.userProfileDialog = document.createElement('etools-user-profile-dialog');
     this.userProfileDialog.addEventListener('save-profile', this._dispatchSaveProfileEvent.bind(this));
     this.userProfileDialog.setAttribute('id', 'userProfileDialog');
+    this.userProfileDialog.translations = this.translations;
     document.querySelector('body').appendChild(this.userProfileDialog);
   }
 
