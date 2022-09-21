@@ -10,6 +10,17 @@ const translations = {
     OK_BTN_TEXT: 'Save',
     CANCEL_BTN_TEXT: 'Close'
   },
+  ro: {
+    PROFILE: 'Profil',
+    MY_PROFILE: 'Profilul meu',
+    SIGN_OUT: 'Deconectare',
+    NAME: 'Nume',
+    AVAILABLE_WORKSPACES: 'Spații de lucru disponibile',
+    MY_GROUPS: 'Grupurile mele',
+    EMAIL: 'Email',
+    OK_BTN_TEXT: 'Salvați',
+    CANCEL_BTN_TEXT: 'Închide'
+  },
   fr: {
     PROFILE: 'Profil',
     MY_PROFILE: 'Mon Profil',
