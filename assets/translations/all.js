@@ -64,7 +64,7 @@ const translations = {
     EMAIL: 'Эл. адрес',
     OK_BTN_TEXT: 'Сохранять',
     CANCEL_BTN_TEXT: 'закрывать'
-  },
+  }
 };
 
 export default translations;
