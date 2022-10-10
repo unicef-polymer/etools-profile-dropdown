@@ -1,4 +1,4 @@
-import translations from '../assets/translations/all';
+import translations from '../assets/translations.js';
 
 export function getTranslation(lang, key) {
   try {
