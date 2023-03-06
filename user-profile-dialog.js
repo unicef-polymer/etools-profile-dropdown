@@ -90,7 +90,7 @@ export class EtoolsUserProfileDialog extends LitElement {
         }
 
         .col:not(:first-child) {
-          padding-left: 24px;
+          padding-inline-start: 24px;
         }
 
         .col-6 {

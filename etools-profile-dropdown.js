@@ -57,7 +57,8 @@ class EtoolsProfileDropdown extends LitElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-          padding: 0 16px 0 8px;
+          padding: 0;
+          padding-inline: 8px 16px;
           cursor: pointer;
           white-space: nowrap;
         }
