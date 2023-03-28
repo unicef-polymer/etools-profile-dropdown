@@ -47,7 +47,7 @@ class EtoolsProfileDropdown extends LitElement {
           z-index: 100;
           background: var(--primary-background-color, #ffffff);
           padding: 8px 0;
-          right: 0;
+          inset-inline-end: 0;
         }
 
         #user-dropdown .item {
@@ -57,7 +57,8 @@ class EtoolsProfileDropdown extends LitElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-          padding: 0 16px 0 8px;
+          padding: 0;
+          padding-inline: 8px 16px;
           cursor: pointer;
           white-space: nowrap;
         }
