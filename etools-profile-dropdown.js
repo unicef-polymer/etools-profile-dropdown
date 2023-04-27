@@ -197,9 +197,7 @@ class EtoolsProfileDropdown extends LitElement {
     this.opened = false;
     this.readonly = true;
     this.showEmail = false;
-    if (!this.language) {
-      this.language = 'en';
-    }
+    this.language = window.EtoolsLanguage ? window.EtoolsLanguage : 'en';
   }
 
   connectedCallback() {
