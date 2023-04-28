@@ -202,11 +202,21 @@ class EtoolsProfileDropdown extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    document.addEventListener('language-changed', this._handleLanguageChange.bind(this));
     this.userProfileDialog = document.createElement('etools-user-profile-dialog');
     this.userProfileDialog.addEventListener('save-profile', this._dispatchSaveProfileEvent.bind(this));
     this.userProfileDialog.setAttribute('id', 'userProfileDialog');
     this.userProfileDialog.language = this.language;
     document.querySelector('body').appendChild(this.userProfileDialog);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('language-changed', this._handleLanguageChange.bind(this));
+  }
+
+  _handleLanguageChange(e) {
+    this.language = e.detail.language;
   }
 
   _dispatchSaveProfileEvent(ev) {
