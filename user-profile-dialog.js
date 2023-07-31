@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit-element';
 import '@polymer/paper-input/paper-input.js';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getTranslation} from './utils/translate';
 
 /**
